@@ -60,16 +60,34 @@ def parse_rigstat_online(html):
         miner_uptime = strip_tags(row.select('.//td[9]/span').attr('title'))
         hashes = strip_tags(row.select('.//td[11]/span').attr('title')).split()
         hashes = [float(s) for s in hashes]
-        temps = [int(s) for s in row.select('.//td[12]').text().split()]
-        power_tune = [int(s) for s in row.select('.//td[13]').text().split()]
+        try:
+            temps = [int(s) for s in row.select('.//td[12]').text().split()]
+        except ValueError:
+            temps = ()
+        try:
+            power_tune = [int(s) for s in row.select('.//td[13]').text().split()]
+        except ValueError:
+            power_tune = ()
         try:
             volts = [float(s) for s in row.select('.//td[14]').text().split()]
         except ValueError:
             volts = ()
-        wattage = [int(s) for s in row.select('.//td[15]').text().split()]
-        fans = [int(s) for s in row.select('.//td[16]').text().split()]
-        clocks_core = [float(s) for s in row.select('.//td[17]').text().split()]
-        clocks_mem = [float(s) for s in row.select('.//td[18]').text().split()]
+        try:
+            wattage = [int(s) for s in row.select('.//td[15]').text().split()]
+        except ValueError:
+            wattage = ()
+        try:
+            fans = [int(s) for s in row.select('.//td[16]').text().split()]
+        except ValueError:
+            fans = ()
+        try:
+            clocks_core = [float(s) for s in row.select('.//td[17]').text().split()]
+        except ValueError:
+            clocks_core = ()
+        try:
+            clocks_mem = [float(s) for s in row.select('.//td[18]').text().split()]
+        except ValueError:
+            clocks_mem = ()
         rig = dict(ethos_version=ethos_version, miner=miner, miner_version=miner_version,
                    driver=driver, gpus_ok=gpus_ok, gpus_total=gpus_total, gpu_list=gpu_list,
                    name=name, rig_info=rig_info, ip=ip,  hashes=hashes, hashes_total=sum(hashes),
